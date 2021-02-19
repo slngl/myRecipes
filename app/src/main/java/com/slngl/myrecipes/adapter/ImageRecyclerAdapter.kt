@@ -17,23 +17,7 @@ class ImageRecyclerAdapter @Inject constructor(
 
     private var onItemClickListener: ((String) -> Unit)? = null
 
-    inner class ImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val imageView = itemView.findViewById<ImageView>(R.id.singleFoodImageView)
-        fun setData(url: String) {
-            itemView.apply {
-                glide.load(url).into(imageView)
-            }
-            setOnItemClickListener {
-                onItemClickListener?.let {
-                    it(url)
-                }
-            }
-//            onItemClicked?.let {
-//                //Unit nullable verdiğimizde
-//                it(url)
-//            }
-        }
-    }
+    inner class ImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     fun setOnItemClickListener(listener : (String) -> Unit){
         onItemClickListener = listener
@@ -67,8 +51,16 @@ class ImageRecyclerAdapter @Inject constructor(
         holder: ImageRecyclerAdapter.ImageViewHolder,
         position: Int
     ) {
-        val url = images.get(position)
-        holder.setData(url)
+        val imageView = holder.itemView.findViewById<ImageView>(R.id.singleFoodImageView)
+        val url = images[position]
+        holder.itemView.apply {
+            glide.load(url).into(imageView)
+            setOnClickListener {
+                onItemClickListener?.let {
+                    it(url)
+                }
+            }
+        }
     }
 
     override fun getItemCount(): Int {
