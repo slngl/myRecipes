@@ -8,6 +8,7 @@ import com.slngl.myrecipes.R
 import com.slngl.myrecipes.db.RecipeDao
 import com.slngl.myrecipes.db.RecipeDatabase
 import com.slngl.myrecipes.di.qualifiers.BaseUrlQualifier
+import com.slngl.myrecipes.network.AppConstants.BASE_URL
 import com.slngl.myrecipes.network.PixabayAPI
 import com.slngl.myrecipes.repository.IRecipeRepository
 import com.slngl.myrecipes.repository.RecipeRepository
@@ -52,15 +53,13 @@ object AppModule {
     @Singleton
     @Provides
     @BaseUrlQualifier
-    fun provideBaseUrl(): String = "https://pixabay.com"
+    fun provideBaseUrl(): String = "http://pixabay.com"
 
-/*
-    @Singleton
+ /*   @Singleton
     @Provides
     fun provideOkHttpClient(builder: OkHttpClient.Builder): OkHttpClient{
         return builder.build()
-    }
-*/
+    }*/
 
     @Singleton
     @Provides
