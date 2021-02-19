@@ -13,19 +13,30 @@ import javax.inject.Inject
 
 class ImageRecyclerAdapter @Inject constructor(
     val glide: RequestManager,
-): RecyclerView.Adapter<ImageRecyclerAdapter.ImageViewHolder>(){
+) : RecyclerView.Adapter<ImageRecyclerAdapter.ImageViewHolder>() {
 
-    inner class ImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+    private var onItemClickListener: ((String) -> Unit)? = null
+
+    inner class ImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imageView = itemView.findViewById<ImageView>(R.id.singleFoodImageView)
-        fun setData(url: String){
+        fun setData(url: String) {
             itemView.apply {
                 glide.load(url).into(imageView)
+            }
+            setOnItemClickListener {
+                onItemClickListener?.let {
+                    it(url)
+                }
             }
 //            onItemClicked?.let {
 //                //Unit nullable verdiğimizde
 //                it(url)
 //            }
         }
+    }
+
+    fun setOnItemClickListener(listener : (String) -> Unit){
+        onItemClickListener = listener
     }
 
     private val diffUtil = object : DiffUtil.ItemCallback<String>() {
@@ -48,7 +59,7 @@ class ImageRecyclerAdapter @Inject constructor(
         parent: ViewGroup,
         viewType: Int
     ): ImageRecyclerAdapter.ImageViewHolder {
-        val view= LayoutInflater.from(parent.context).inflate(R.layout.image_row, parent,false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.image_row, parent, false)
         return ImageViewHolder(view)
     }
 

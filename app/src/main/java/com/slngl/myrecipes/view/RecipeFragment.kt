@@ -47,6 +47,9 @@ class RecipeFragment @Inject constructor(private val recipeRecyclerAdapter: Reci
         val binding = FragmentRecipesBinding.bind(view)
         fragmentBinding = binding
 
+        subscribeToObservers()
+
+
         binding.rvRecipe.adapter= recipeRecyclerAdapter
         binding.rvRecipe.layoutManager=LinearLayoutManager(requireContext())
 
