@@ -18,6 +18,8 @@ class RecipeRecyclerAdapter @Inject constructor(
     val glide: RequestManager
 ) : RecyclerView.Adapter<RecipeRecyclerAdapter.RecipeViewHolder>() {
 
+    private var onItemClickListener: ((Int) -> Unit)? = null
+
 
     inner class RecipeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imageView = itemView.findViewById<ImageView>(R.id.recipeRowImageView)
@@ -30,8 +32,16 @@ class RecipeRecyclerAdapter @Inject constructor(
                 yieldText.text = recipe.yield
                 timeText.text = recipe.time
                 glide.load(recipe.imageURL).into(imageView)
+                setOnClickListener {
+                    onItemClickListener?.let { id ->
+                        recipe.id?.let { it1 -> id(it1) }
+                    }
+                }
             }
         }
+    }
+    fun setOnItemClickListener(listener : (Int) -> Unit){
+        onItemClickListener = listener
     }
 
     private val diffUtil = object : DiffUtil.ItemCallback<Recipe>() {

@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.RequestManager
 import com.slngl.myrecipes.R
 import com.slngl.myrecipes.databinding.FragmentRecipeDetailsBinding
@@ -23,6 +24,8 @@ class RecipeDetailsFragment @Inject constructor(val glide: RequestManager) :
     lateinit var viewModel: RecipeViewModel
     private var fragmentBinding: FragmentRecipeDetailsBinding? = null
 
+    val args : RecipeDetailsFragmentArgs by navArgs()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -33,8 +36,35 @@ class RecipeDetailsFragment @Inject constructor(val glide: RequestManager) :
         subsribeToObservers()
 
         binding.ivRecipe.setOnClickListener {
-            findNavController().navigate(RecipeDetailsFragmentDirections.actionRecipeDetailsFragmentToImageFromAPIFragment())
+
+                findNavController().navigate(RecipeDetailsFragmentDirections.actionRecipeDetailsFragmentToImageFromAPIFragment())
+
         }
+
+        val id= args.argRecipeDetail
+        viewModel.getRecipe(id)
+        if (id>0) {
+            viewModel.recipe.observe(viewLifecycleOwner, Observer { recipe ->
+                val txt = recipe.method
+/*                Toast.makeText(requireContext(), "method= ${txt}, arg=${id}", Toast.LENGTH_SHORT)
+                    .show()*/
+                binding.etName.setText(recipe.name)
+                binding.etName.isEnabled=false
+                binding.etIngredients.setText(recipe.ingredients)
+                binding.etIngredients.isEnabled=false
+                binding.etMethod.setText(recipe.method)
+                binding.etMethod.isEnabled=false
+                binding.etYield.setText(recipe.yield)
+                binding.etYield.isEnabled=false
+                binding.etTotalTime.setText(recipe.time)
+                binding.etTotalTime.isEnabled=false
+                binding.ivRecipe.isClickable=false
+                glide.load(recipe.imageURL).into(binding.ivRecipe)
+                binding.btSave.setText("BACK")
+            })
+        }
+
+
 
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -44,14 +74,23 @@ class RecipeDetailsFragment @Inject constructor(val glide: RequestManager) :
 
         requireActivity().onBackPressedDispatcher.addCallback(callback)
 
+
         binding.btSave.setOnClickListener {
-            viewModel.makeRecipe(
-                binding.nameText.text.toString(),
-                binding.etYield.text.toString(),
-                binding.etTotalTime.text.toString(),
-                binding.tvMethod.text.toString(),
-                binding.textViewIngredients.text.toString()
-            )
+            if (id == 0) {
+                viewModel.makeRecipe(
+                    binding.etName.text.toString(),
+                    binding.etYield.text.toString(),
+                    binding.etTotalTime.text.toString(),
+                    binding.etMethod.text.toString(),
+                    binding.etIngredients.text.toString()
+                )
+            }else{
+/*                viewModel.recipe.observe(viewLifecycleOwner, Observer {  recipe->
+                    viewModel.updateRecipe(recipe)
+
+                })*/
+                findNavController().popBackStack()
+            }
         }
 
     }

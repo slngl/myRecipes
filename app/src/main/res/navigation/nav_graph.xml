@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_graph"
-    app:startDestination="@id/recipeFragment">
+    app:startDestination="@id/splashFragment">
 
     <fragment
         android:id="@+id/recipeFragment"
@@ -9,6 +9,9 @@
         android:label="RecipeFragment" >
         <action
             android:id="@+id/action_recipeFragment_to_recipeDetailsFragment"
+            app:destination="@id/recipeDetailsFragment" />
+        <action
+            android:id="@+id/action_recipeFragment_to_recipeDetailsFragment2"
             app:destination="@id/recipeDetailsFragment" />
     </fragment>
     <fragment
@@ -18,9 +21,20 @@
         <action
             android:id="@+id/action_recipeDetailsFragment_to_imageFromAPIFragment"
             app:destination="@id/imageFromAPIFragment" />
+        <argument
+            android:name="argRecipeDetail"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/imageFromAPIFragment"
         android:name="com.slngl.myrecipes.view.ImageFromAPIFragment"
         android:label="ImageFromAPIFragment" />
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.slngl.myrecipes.view.SplashFragment"
+        android:label="SplashFragment" >
+        <action
+            android:id="@+id/action_splashFragment_to_recipeFragment"
+            app:destination="@id/recipeFragment" />
+    </fragment>
 </navigation>

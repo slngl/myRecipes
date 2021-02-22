@@ -15,7 +15,13 @@ class RecipeViewModel @ViewModelInject constructor(private val repository: IReci
     ViewModel() {
 
     //RecipeFragment
-    val recipeList = repository.getRecipe()
+    val recipeList = repository.getRecipes()
+
+    lateinit var recipe: LiveData<Recipe>
+
+    fun getRecipe(id: Int) = viewModelScope.launch {
+        recipe = repository.getRecipe(id)
+    }
 
     //ImageAPIFragment
 
@@ -27,7 +33,7 @@ class RecipeViewModel @ViewModelInject constructor(private val repository: IReci
     val selectedImageUrl: LiveData<String>
         get() = selectedImage
 
-//    ArtDetailFragment
+//    RecipeDetailFragment
 
     private var insertRecipeMsg = MutableLiveData<DataHolder<Recipe>>()
     val insertMessage: LiveData<DataHolder<Recipe>>
@@ -35,6 +41,10 @@ class RecipeViewModel @ViewModelInject constructor(private val repository: IReci
 
     fun resetInsertRecipeMsg() {
         insertRecipeMsg = MutableLiveData<DataHolder<Recipe>>()
+    }
+
+    fun updateRecipe(recipe: Recipe){
+        repository.updateRecipe(recipe)
     }
 
     fun setSelectedImage(url: String) = selectedImage.postValue(url)
@@ -52,8 +62,8 @@ class RecipeViewModel @ViewModelInject constructor(private val repository: IReci
         name: String, mYield: String, totalTime: String,
         method: String, ingredients: String,
     ) {
-        if (name.isEmpty() || mYield.isEmpty() || totalTime.isEmpty()) {
-            insertRecipeMsg.postValue(DataHolder.error("Enter name, yield, total time", null))
+        if (name.isEmpty() || mYield.isEmpty() || totalTime.isEmpty() || method.isEmpty() || ingredients.isEmpty()) {
+            insertRecipeMsg.postValue(DataHolder.error("Enter name, yield, total time, ingreidents and method", null))
             return
         }
         val recipe = Recipe(name, mYield, totalTime, method, ingredients, selectedImage.value ?: "")

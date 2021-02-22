@@ -11,7 +11,11 @@ interface IRecipeRepository {
 
     suspend fun deleteRecipe(recipe: Recipe)
 
-    fun getRecipe(): LiveData<List<Recipe>>
+    fun getRecipes(): LiveData<List<Recipe>>
+
+    fun getRecipe(id : Int): LiveData<Recipe>
+
+    fun updateRecipe(recipe: Recipe)
 
     suspend fun searchImage(imageString: String): DataHolder<ImageResponse>
 }

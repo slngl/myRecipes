@@ -2,6 +2,7 @@ package com.slngl.myrecipes.view
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -52,10 +53,17 @@ class RecipeFragment @Inject constructor(private val recipeRecyclerAdapter: Reci
 
         binding.rvRecipe.adapter= recipeRecyclerAdapter
         binding.rvRecipe.layoutManager=LinearLayoutManager(requireContext())
+        recipeRecyclerAdapter.setOnItemClickListener {
+/*
+            Toast.makeText(requireContext(), "id=${it}", Toast.LENGTH_SHORT).show()
+*/
+            val action = RecipeFragmentDirections.actionRecipeFragmentToRecipeDetailsFragment2(it)
+            findNavController().navigate(action)
+        }
 
         ItemTouchHelper(swipeCallBack).attachToRecyclerView(binding.rvRecipe)
         binding.fab.setOnClickListener {
-            findNavController().navigate(RecipeFragmentDirections.actionRecipeFragmentToRecipeDetailsFragment())
+            findNavController().navigate(RecipeFragmentDirections.actionRecipeFragmentToRecipeDetailsFragment(0))
         }
 
     }

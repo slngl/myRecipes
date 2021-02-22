@@ -8,7 +8,6 @@ import com.slngl.myrecipes.R
 import com.slngl.myrecipes.db.RecipeDao
 import com.slngl.myrecipes.db.RecipeDatabase
 import com.slngl.myrecipes.di.qualifiers.BaseUrlQualifier
-import com.slngl.myrecipes.network.AppConstants.BASE_URL
 import com.slngl.myrecipes.network.PixabayAPI
 import com.slngl.myrecipes.repository.IRecipeRepository
 import com.slngl.myrecipes.repository.RecipeRepository
@@ -17,7 +16,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
-import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -40,7 +38,8 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideNormalRepo(dao: RecipeDao, api: PixabayAPI) = RecipeRepository(dao,api) as IRecipeRepository
+    fun provideNormalRepo(dao: RecipeDao, api: PixabayAPI) =
+        RecipeRepository(dao, api) as IRecipeRepository
 
     @Singleton
     @Provides
@@ -55,23 +54,17 @@ object AppModule {
     @BaseUrlQualifier
     fun provideBaseUrl(): String = "http://pixabay.com"
 
- /*   @Singleton
-    @Provides
-    fun provideOkHttpClient(builder: OkHttpClient.Builder): OkHttpClient{
-        return builder.build()
-    }*/
 
     @Singleton
     @Provides
     fun provideApiService(
         @BaseUrlQualifier baseUrl: String,
-    ) : PixabayAPI {
+    ): PixabayAPI {
         return Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
             .baseUrl(baseUrl)
             .build().create(PixabayAPI::class.java)
     }
-
 
 
 }

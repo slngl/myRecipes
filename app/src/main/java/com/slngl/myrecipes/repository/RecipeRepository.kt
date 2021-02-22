@@ -20,8 +20,16 @@ class RecipeRepository @Inject constructor(
         recipeDao.deleteRecipe(recipe)
     }
 
-    override fun getRecipe(): LiveData<List<Recipe>> {
+    override fun getRecipes(): LiveData<List<Recipe>> {
         return recipeDao.observeRecipes()
+    }
+
+    override fun getRecipe(id: Int): LiveData<Recipe> {
+        return recipeDao.getRecipe(id)
+    }
+
+    override fun updateRecipe(recipe: Recipe) {
+        return recipeDao.updateRecipe(recipe)
     }
 
     override suspend fun searchImage(imageString: String): DataHolder<ImageResponse> {
