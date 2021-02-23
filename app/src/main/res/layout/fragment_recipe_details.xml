@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:nestedScrollingEnabled="true"
         android:paddingStart="8dp"
+        android:background="@drawable/bg_orange"
         app:layout_constraintBottom_toTopOf="@+id/textInputLayout12"
         app:layout_constraintTop_toTopOf="@+id/textInputLayout12">
 
