@@ -71,7 +71,7 @@
                 android:background="@color/white"
                 android:ems="10"
                 android:hint="Yield"
-                android:inputType="textPersonName"
+                android:inputType="number|textPersonName"
                 android:paddingBottom="4dp"
                 tools:layout_editor_absoluteX="88dp"
                 tools:layout_editor_absoluteY="169dp" />
